@@ -1,3 +1,6 @@
+import random
+
+
 class Student:
     def __init__(self, student_id, name, surname):
         self.student_id = student_id
@@ -8,7 +11,7 @@ class Student:
     def adding_course(self, course):
         if course not in self.courses:
             self.courses.append(course)
-            course.append_stundet(self)
+            course.append_student(self)
 
     def drop_course(self, course):
         if course in self.courses:
@@ -82,3 +85,43 @@ class School:
             if course.course_id == course_id:
                 return course
         return None
+
+
+def main():
+    school = School()
+
+    count = int(input("Pls enter how many students do you want to enter: "))
+    print(f"Now you have to enter {count} Students and their grades")
+
+    courses = {
+        1: "Math",
+        2: "English",
+        3: "History",
+        4: "Physics"
+    }
+
+    for i in range(count):
+        student_id = int(input("Enter student id: "))
+        name = input("Enter Student name: ")
+        surname = input("Enter Student surname: ")
+        student = Student(student_id, name, surname)
+        school.append_student(student)
+        print("Student added")
+
+        course_id = int(input("Enter course id (1: Math, 2: English, 3: History, 4: Physics): "))
+        if course_id in courses:
+            course_name = courses[course_id]
+            print(f"That student Id is {student_id} and his/her course is {course_name}")
+
+            grade_value = random.uniform(60, 100)
+            course = Course(course_id, course_name, 3)
+            student.adding_course(course)
+            course.append_student(student)
+            Grade().assign_grade(student, course, grade_value)
+            print(f"Grade {grade_value:.2f} assigned to student {student.name} for course {course.course_name}")
+        else:
+            print(f"That student Id is {student_id} and the provided course id ({course_id}) is incorrect.")
+
+
+if __name__ == "__main__":
+    main()
