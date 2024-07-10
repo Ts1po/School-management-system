@@ -40,8 +40,8 @@ class Course:
         if student in self.students:
             self.students.remove(student)
 
-    def get_student(self):
-        return [student.name for student in self.students]
+    # def get_student(self):
+    #     return [student.name for student in self.students]
 
 
 class Grade:
@@ -53,8 +53,8 @@ class Grade:
             self.grades[course.course_id] = {}
         self.grades[course.course_id][student.student_id] = grade
 
-    def get_grade(self, student, course):
-        return self.grades.get(course.course_id, {}).get(student.student_id, None)
+    # def get_grade(self, student, course):
+    #     return self.grades.get(course.course_id, {}).get(student.student_id, None)
 
 
 class School:
@@ -65,8 +65,13 @@ class School:
     def append_student(self, student):
         self.students.append(student)
 
-    def remove_student(self, student):
-        self.students.remove(student)
+    def remove_student(self, student_id):
+        for student in self.students:
+            if student.student_id == student_id:
+                self.students.remove(student)
+                print(f"Student with student Id {student_id} removed")
+                return
+        print(f"There is no student with that ID {student_id}")
 
     def append_course(self, course):
         self.courses.append(course)
@@ -100,12 +105,15 @@ def main():
         4: "Physics"
     }
 
+    student_ids = []
+
     for i in range(count):
         student_id = int(input("Enter student id: "))
         name = input("Enter Student name: ")
         surname = input("Enter Student surname: ")
         student = Student(student_id, name, surname)
         school.append_student(student)
+        student_ids.append(student_id)
         print("Student added")
 
         course_id = int(input("Enter course id (1: Math, 2: English, 3: History, 4: Physics): "))
@@ -121,6 +129,13 @@ def main():
             print(f"Grade {grade_value:.2f} assigned to student {student.name} for course {course.course_name}")
         else:
             print(f"That student Id is {student_id} and the provided course id ({course_id}) is incorrect.")
+
+    ques = input("Do you want to remove any student? pls answer yes or no: ")
+    if ques.lower() == "yes":
+        answer = int(input("Which student do you want to remove, pls write student id: "))
+        school.remove_student(answer)
+    else:
+        print("You don't want to remove student")
 
 
 if __name__ == "__main__":
